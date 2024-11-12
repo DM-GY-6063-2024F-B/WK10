@@ -1,6 +1,3 @@
-// TODO: add color and mouseover
-//       classify it
-
 let blinks = [];
 
 function setup() {

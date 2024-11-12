@@ -3,7 +3,17 @@ class Movey {
     this.pos = createVector(x, y);
     this.vel = createVector(random(-10, 10), random(-10, 10));
     this.rad = random(15, 25);
-    this.mocolor = color(random(20,50), random(20,50), random(150,255));
+    this.mocolor = color(random(20, 50), random(20, 50), random(150, 255));
+    
+    // play pre-loaded sound
+    let bloopIdx = floor(random(bloops.length));
+    bloops[bloopIdx].play();
+
+    // use same file to create a sound object for this Movey
+    this.bloop = loadSound(bloops[bloopIdx].url);
+
+    // make sure it doesn't play multiple times per overlap to avoid buzzzz sound
+    this.bloop.playMode("untilDone");
   }
 
   // return true/false telling if this circle is overlapping with specific other circle
@@ -27,14 +37,17 @@ class Movey {
       this.vel.y *= -1;
     }
 
-    let overlap = false;
+    let overlapping = false;
 
     for (let idx = 0; idx < others.length; idx++) {
-      overlap |= this.overlap(others[idx]);
+      // this accumulates overlaps.
+      // ends true if any of them is true
+      overlapping |= this.overlap(others[idx]);
     }
 
-    if (overlap) {
+    if (overlapping) {
       fill(this.mocolor);
+      this.bloop.play();
     } else {
       fill(255);
     }
@@ -44,6 +57,14 @@ class Movey {
 }
 
 let moves = [];
+let bloops = [];
+
+function preload() {
+  bloops.push(loadSound("../assets/bloop-0.mp3"));
+  bloops.push(loadSound("../assets/bloop-1.mp3"));
+  bloops.push(loadSound("../assets/bloop-2.mp3"));
+  bloops.push(loadSound("../assets/bloop-3.mp3"));
+}
 
 function setup() {
   createCanvas(windowWidth, windowHeight);

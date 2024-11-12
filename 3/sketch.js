@@ -1,9 +1,10 @@
-// TODO: volume and FFT
-
-let song;
+let bloops = [];
 
 function preload() {
-  song = loadSound("../assets/epic.mp3");
+  bloops.push(loadSound("../assets/bloop-0.mp3"));
+  bloops.push(loadSound("../assets/bloop-1.mp3"));
+  bloops.push(loadSound("../assets/bloop-2.mp3"));
+  bloops.push(loadSound("../assets/bloop-3.mp3"));
 }
 
 function setup() {
@@ -15,9 +16,6 @@ function draw() {
 }
 
 function mouseClicked() {
-  if (song.isPlaying()) {
-    song.pause();
-  } else {
-    song.play();
-  }
+  let mBloop = random(bloops);
+  mBloop.play();
 }
