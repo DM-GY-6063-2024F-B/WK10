@@ -1,5 +1,5 @@
 let song;
-let mFFT;
+let mAmplitude;
 
 function preload() {
   song = loadSound("../assets/epic.mp3");
@@ -7,27 +7,21 @@ function preload() {
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  noFill();
-  mFFT = new p5.FFT();
+  noStroke();
+  mAmplitude = new p5.Amplitude();
 }
-
+  
 function draw() {
   background(220, 10);
+  let vol = mAmplitude.getLevel();
 
-  // must call this before getting energy
-  mFFT.analyze();
+  let diam = map(vol, 0, 1, 0, 1.4 * width);
+  let sat = map(vol, 0, 1, 55, 255);
 
-  let energyT = mFFT.getEnergy("treble");
-  let diamT = map(energyT, 0, 255, 0, height / 3);
-  ellipse(width / 2, height/6, diamT);
+  let c = color(0, 0, sat, sat);
 
-  let energyM = mFFT.getEnergy("mid");
-  let diamM = map(energyM, 0, 255, 0, height / 3);
-  ellipse(width / 2, 3 * height / 6, diamM);
-
-  let energyB = mFFT.getEnergy("bass");
-  let diamB = map(energyB, 0, 255, 0, height / 3);
-  ellipse(width / 2, 5 * height / 6, diamB);
+  fill(c);
+  ellipse(width / 2, height / 2, diam);
 }
 
 function mouseClicked() {
